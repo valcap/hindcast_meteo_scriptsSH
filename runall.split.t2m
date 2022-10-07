@@ -1,0 +1,25 @@
+#!/bin/bash -l
+
+#-------------------------------
+# setting options for SLURM
+#-------------------------------
+#-------------------------------
+
+#SBATCH --job-name=PIPPO
+#SBATCH --output=log/PIPPO.%N.%j.out
+#SBATCH --error=log/PIPPO.%N.%j.out
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=capecchi@lamma.toscana.it
+#SBATCH --chdir=/home/waves/scripts_hindcast
+
+cd /OCEANASTORE/progetti/spitbran/ERA5-Land/t2m
+grib_filter -v split.rule ERA5-Land_1.grib
+
+for y in `seq 2010 2019`
+do
+  cat PIPPO_${y}0* PIPPO_${y}1* > ERA5-Land_${y}-hour_t2m.grib1
+  rm -f PIPPO_${y}0* PIPPO_${y}1*
+done
+
+exit 0;
+

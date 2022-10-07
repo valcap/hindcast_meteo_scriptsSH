@@ -1,0 +1,29 @@
+#!/bin/bash -l
+
+#-------------------------------
+# setting options for SLURM
+#-------------------------------
+#-------------------------------
+
+#SBATCH --job-name=PIPPO
+#SBATCH --output=log/PIPPO.%N.%j.out
+#SBATCH --error=log/PIPPO.%N.%j.out
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-user=capecchi@lamma.toscana.it
+#SBATCH --chdir=/home/waves/scripts_hindcast
+
+cd /OCEANASTORE/progetti/spitbran/ERA5-Land/winds
+
+var_is='10u'
+grib_filter -v /home/waves/scripts_hindcast/script_sh/split.rule adaptor.mars.internal-1615018297.7419949-23882-23-7c39829b-3539-4b29-915f-4f447a0f797c.grib 
+
+for y in `seq 1992 1992`
+do
+  cat PIPPO_${y}0*_hour_${var_is}.grib1 PIPPO_${y}1*_hour_${var_is}.grib1 > ERA5-Land_${y}-hour_${var_is}.grib1
+  rm -f PIPPO_${y}0*_hour_${var_is}.grib1 PIPPO_${y}1*_hour_${var_is}.grib1
+done
+
+rm -f adaptor.mars.internal-1615018297.7419949-23882-23-7c39829b-3539-4b29-915f-4f447a0f797c.grib
+
+exit 0;
+

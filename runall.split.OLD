@@ -1,0 +1,11 @@
+#!/bin/bash
+
+grib_filter -v split.rule ERA5-Land_1981-1989-hour_tp.grib1 
+
+for y in `seq 1981 1989`
+do
+  cat PIPPO_${y}0* PIPPO_${y}1* > ERA5-Land_${y}-hour_tp.grib1
+  rm -f PIPPO_${y}0* PIPPO_${y}1*
+done
+
+exit 0;

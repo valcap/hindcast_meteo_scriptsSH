@@ -1,0 +1,1 @@
+write "PIPPO_[date]_hour_[shortName].grib[editionNumber]";
